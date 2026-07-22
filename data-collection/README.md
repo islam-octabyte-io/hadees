@@ -54,7 +54,12 @@ Required fields (from the task) plus useful extras:
 | `books.json` | Generated book registry (24 books + counts) |
 | `data/` | Output: one `<slug>.jsonl` per book (+ `hadees.csv`) |
 
-## Setup
+## Running data collection
+
+A full run from scratch, step by step. Run everything from inside the
+`data-collection/` directory; the examples use the project venv at `../.venv`.
+
+**1. Set up the environment (once)**
 
 ```bash
 cd data-collection
@@ -62,28 +67,77 @@ python3 -m venv ../.venv
 ../.venv/bin/pip install -r requirements.txt
 ```
 
-## Usage
+**2. Build the book registry**
+
+`books.json` is committed, but rebuild it to pick up any newly-added books and
+refresh the narration counts:
 
 ```bash
-# (Re)build the book registry from the site — already committed, re-run to pick
-# up newly-added books.
-python discover.py
-
-# Smoke test: first 5 hadees of Bukhari
-python scrape.py bukhari --limit 5
-
-# Scrape specific books
-python scrape.py bukhari muslim
-
-# Scrape everything (long-running — see note below)
-python scrape.py
-
-# Be gentler on the server (1 second between requests)
-python scrape.py --delay 1.0
-
-# Export collected data to CSV
-python export_csv.py
+../.venv/bin/python discover.py
 ```
+
+**3. Smoke-test before the real run**
+
+Grab a handful of hadees to confirm everything works end to end:
+
+```bash
+../.venv/bin/python scrape.py bukhari --limit 5
+```
+
+Check `data/bukhari.jsonl` — you should see 5 JSON lines with Arabic, Urdu,
+number and status.
+
+**4. Collect the data**
+
+```bash
+# One or more specific books
+../.venv/bin/python scrape.py bukhari muslim
+
+# Every book (~185k narrations — long-running, see below)
+../.venv/bin/python scrape.py
+```
+
+Because the full corpus is large, run it in the background and log the output so
+you can watch progress and let it survive a closed terminal:
+
+```bash
+nohup ../.venv/bin/python scrape.py --delay 0.5 > scrape.log 2>&1 &
+
+tail -f scrape.log        # watch live progress
+```
+
+The scrape is **resumable** — it appends to `data/<slug>.jsonl` and skips ids
+already saved, so you can stop it (`Ctrl-C` / `kill`) and re-run the same
+command any time to continue where it left off. Nothing is re-fetched.
+
+**5. Check what you have collected**
+
+```bash
+# records per book
+wc -l data/*.jsonl
+
+# total records collected so far
+cat data/*.jsonl | wc -l
+```
+
+**6. Export to CSV (optional)**
+
+```bash
+../.venv/bin/python export_csv.py            # -> data/hadees.csv (all books)
+../.venv/bin/python export_csv.py bukhari    # a single book
+```
+
+### Useful options
+
+| Option | Effect |
+|--------|--------|
+| `<slug> [<slug> …]` | scrape only these books (default: all in `books.json`) |
+| `--limit N` | stop each book after N ids (smoke testing) |
+| `--delay S` | seconds between requests (default `0.5`; raise to be gentler) |
+| `--refresh-books` | rebuild `books.json` from the site before scraping |
+
+Book slugs are the keys in `books.json` (e.g. `bukhari`, `muslim`, `tirmazi`,
+`abu-dawood`, `nisai`, `ibn-e-maja`, `musnad-ahmed`, …).
 
 ## Output format
 
