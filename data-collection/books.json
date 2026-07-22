@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "bukhari",
+    "name": "Sahih Bukhari",
+    "urdu_name": "ﷲ",
+    "count": 7563
+  },
+  {
+    "slug": "muslim",
+    "name": "Sahih Muslim",
+    "urdu_name": "ﷲ",
+    "count": 7564
+  },
+  {
+    "slug": "tirmazi",
+    "name": "Jam e Tirmazi",
+    "urdu_name": "ﷲ",
+    "count": 3956
+  },
+  {
+    "slug": "abu-dawood",
+    "name": "Sunnan Abu Dawood",
+    "urdu_name": "ﷲ",
+    "count": 5274
+  },
+  {
+    "slug": "nisai",
+    "name": "Sunnan Nisai",
+    "urdu_name": "ﷲ",
+    "count": 5761
+  },
+  {
+    "slug": "ibn-e-maja",
+    "name": "Ibn e Maja",
+    "urdu_name": "ﷲ",
+    "count": 4341
+  },
+  {
+    "slug": "silsila-sahih",
+    "name": "Al Silsila Sahiha",
+    "urdu_name": "ﷲ",
+    "count": 4103
+  },
+  {
+    "slug": "musnad-ahmed",
+    "name": "Musnad Ahmed",
+    "urdu_name": "ﷲ",
+    "count": 27717
+  },
+  {
+    "slug": "fatah-alrabani",
+    "name": "Fatah Al-Rabani",
+    "urdu_name": "ﷲ",
+    "count": 13440
+  },
+  {
+    "slug": "mishkat",
+    "name": "Mishkat al-Masabih",
+    "urdu_name": "ﷲ",
+    "count": 6294
+  },
+  {
+    "slug": "bayhaqi",
+    "name": "Sunnan Al Kubra Bayhaqi",
+    "urdu_name": "ﷲ",
+    "count": 21818
+  },
+  {
+    "slug": "shamail-tirmazi",
+    "name": "Shamail-e-Tirmazi",
+    "urdu_name": "ﷲ",
+    "count": 412
+  },
+  {
+    "slug": "aladab-almufrad",
+    "name": "Al-Adab Al-Mufrad",
+    "urdu_name": "ﷲ",
+    "count": 1329
+  },
+  {
+    "slug": "mustadrak",
+    "name": "Al Mustadrak",
+    "urdu_name": "ﷲ",
+    "count": 8803
+  },
+  {
+    "slug": "sunan-darmi",
+    "name": "Sunan Darmi",
+    "urdu_name": "ﷲ",
+    "count": 3535
+  },
+  {
+    "slug": "imam-malik",
+    "name": "Muwatta Imam Malik",
+    "urdu_name": "ﷲ",
+    "count": 2776
+  },
+  {
+    "slug": "muajam-tabarani-saghir",
+    "name": "Muajam Saghir Tabarani",
+    "urdu_name": "ﷲ",
+    "count": 1197
+  },
+  {
+    "slug": "musannaf-ibn-abi-shaybah",
+    "name": "Musannaf Abi Shaybah",
+    "urdu_name": "ﷲ",
+    "count": 39098
+  },
+  {
+    "slug": "sahih-ibn-khuzaymah",
+    "name": "Sahih Ibn Khuzaymah",
+    "urdu_name": "ﷲ",
+    "count": 3787
+  },
+  {
+    "slug": "sunan-al-daraqutni",
+    "name": "Sunan al-Daraqutni",
+    "urdu_name": "ﷲ",
+    "count": 4859
+  },
+  {
+    "slug": "bulugh-al-maram",
+    "name": "Bulugh al-Maram",
+    "urdu_name": "ﷲ",
+    "count": 1360
+  },
+  {
+    "slug": "lulu-wal-marjan",
+    "name": "Al-Lu'lu wal-Marjan",
+    "urdu_name": "ﷲ",
+    "count": 1907
+  },
+  {
+    "slug": "sahih-ibn-habban",
+    "name": "Sahih Ibn-e-Habban",
+    "urdu_name": "ﷲ",
+    "count": 7491
+  },
+  {
+    "slug": "musnad-humaidi",
+    "name": "Musnad Humaidi",
+    "urdu_name": "ﷲ",
+    "count": 1337
+  }
+]

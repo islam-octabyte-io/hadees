@@ -1,0 +1,4 @@
+# Scraper output — generated data is not committed.
+*.jsonl
+*.csv
+!.gitignore
