@@ -107,6 +107,20 @@ Example (abridged):
 }
 ```
 
+## Progress output
+
+`scrape.py` reports live progress per book:
+
+```
+=== Sahih Bukhari (bukhari) — 7563 narrations, 0 already saved ===
+  bukhari    1234/7563  16.3%  saved 1200  skip 34  fail 0  1.9/s  saved #1234 [Sahih]
+```
+
+On an interactive terminal this is a single line that updates in place; when
+output is redirected to a log file (e.g. a background run) it prints the first
+item and then every 25. Each book ends with a `done … +N new, N skipped,
+N failed` summary.
+
 ## Notes on running the full scrape
 
 - The full corpus is ~185k narrations. At the default 0.5s delay that is a

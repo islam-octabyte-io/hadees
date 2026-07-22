@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import sys
+import time
 
 from fetcher import Fetcher, BASE_URL
 from parser import parse_hadees
@@ -45,6 +46,52 @@ STOP_AFTER_EMPTY = 5
 
 def out_path(slug):
     return os.path.join(DATA_DIR, f"{slug}.jsonl")
+
+
+# Track the length of the last progress line so we can fully overwrite it.
+_last_len = 0
+
+
+def _progress(slug, hid, upper, saved, skipped, failed, started, note="",
+              newline=False):
+    """
+    Print a single, live-updating progress line to stderr.
+
+    On a terminal the line rewrites itself in place (carriage return); when
+    output is redirected to a file/pipe we emit a normal line every so often so
+    logs stay readable.
+    """
+    global _last_len
+    elapsed = max(time.time() - started, 1e-6)
+    rate = (saved + skipped + failed) / elapsed  # pages/sec this run
+    pct = f"{100 * hid / upper:5.1f}%" if upper else "  ?  "
+    total = str(upper) if upper else "?"
+    line = (f"  {slug:<26} {hid:>6}/{total:<6} {pct}  "
+            f"saved {saved:<6} skip {skipped:<5} fail {failed:<3} "
+            f"{rate:4.1f}/s  {note}")
+
+    is_tty = sys.stderr.isatty()
+    if is_tty and not newline:
+        pad = max(_last_len - len(line), 0)
+        sys.stderr.write("\r" + line + " " * pad)
+        sys.stderr.flush()
+        _last_len = len(line)
+    elif newline:
+        # Finish the in-place line (TTY) or emit a summary line (non-TTY).
+        if is_tty:
+            pad = max(_last_len - len(line), 0)
+            sys.stderr.write("\r" + line + " " * pad + "\n")
+        else:
+            sys.stderr.write(line + "\n")
+        sys.stderr.flush()
+        _last_len = 0
+    else:
+        # Non-TTY (redirected / background): print the first processed item and
+        # then every 25, so logs show progress early without being spammed.
+        processed = saved + skipped + failed
+        if processed == 1 or processed % 25 == 0:
+            sys.stderr.write(line + "\n")
+            sys.stderr.flush()
 
 
 def already_scraped(slug):
@@ -79,7 +126,8 @@ def scrape_book(fetcher, book, limit=None):
     print(f"\n=== {name} ({slug}) — {count} narrations, "
           f"{len(done)} already saved ===", file=sys.stderr)
 
-    saved = 0
+    started = time.time()
+    saved = skipped = failed = 0
     empty_streak = 0
     hid = 0
     path = out_path(slug)
@@ -95,14 +143,20 @@ def scrape_book(fetcher, book, limit=None):
                 break
 
             if hid in done:
+                skipped += 1
                 empty_streak = 0
+                _progress(slug, hid, upper, saved, skipped, failed, started,
+                          note="skip (already saved)")
                 continue
 
             url = f"{BASE_URL}/{slug}/{hid}"
             try:
                 html = fetcher.get(url)
             except Exception as exc:  # noqa: BLE001 — log and move on
-                print(f"  ! fetch failed {url}: {exc}", file=sys.stderr)
+                failed += 1
+                _progress(slug, hid, upper, saved, skipped, failed, started,
+                          note="FETCH FAILED", newline=True)
+                print(f"    ! {url}: {exc}", file=sys.stderr)
                 empty_streak = 0
                 continue
 
@@ -110,9 +164,11 @@ def scrape_book(fetcher, book, limit=None):
                                book_name=name, hid=hid)
             if rec is None:
                 empty_streak += 1
+                _progress(slug, hid, upper, saved, skipped, failed, started,
+                          note=f"empty page ({empty_streak})")
                 if empty_streak >= STOP_AFTER_EMPTY and (not upper or hid >= upper):
-                    print(f"  stopping at id {hid} "
-                          f"({empty_streak} consecutive empties)", file=sys.stderr)
+                    _progress(slug, hid, upper, saved, skipped, failed, started,
+                              note="stopping (end of book)", newline=True)
                     break
                 continue
 
@@ -120,12 +176,13 @@ def scrape_book(fetcher, book, limit=None):
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
             fh.flush()
             saved += 1
-            if saved % 50 == 0:
-                print(f"  {slug}: saved {saved} (at id {hid}/{count})",
-                      file=sys.stderr)
+            status = (rec.get("status") or [{}])[0].get("english") or "?"
+            _progress(slug, hid, upper, saved, skipped, failed, started,
+                      note=f"saved #{rec.get('international_number')} [{status}]")
 
-    print(f"  done {slug}: +{saved} new records "
-          f"(total {len(done) + saved})", file=sys.stderr)
+    _progress(slug, hid, upper, saved, skipped, failed, started, newline=True)
+    print(f"  done {slug}: +{saved} new, {skipped} skipped, {failed} failed "
+          f"(total on disk {len(done) + saved})", file=sys.stderr)
     return saved
 
 
