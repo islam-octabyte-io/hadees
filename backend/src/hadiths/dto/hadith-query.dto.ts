@@ -1,15 +1,34 @@
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { editionParam } from '../../common/dto/edition-query.dto';
+import { listQuerySchema } from '../../common/dto/list-query.dto';
 
-export const hadithQuerySchema = z.object({
+/** `?edition=` plus `?page=`/`?limit=` — shared by every `.../hadiths` route. */
+export const hadithListQuerySchema = listQuerySchema.extend({
+  edition: editionParam,
+});
+
+export class HadithListQueryDto extends createZodDto(hadithListQuerySchema) {}
+
+export const hadithQuerySchema = hadithListQuerySchema.extend({
   book: z
     .string()
     .min(1)
     .max(100)
     .optional()
-    .describe('Filter by book slug, e.g. "bukhari"'),
-  page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(20),
+    .describe('Book slug, number, UCI or prefix, e.g. "bukhari"'),
+  kitab: z
+    .string()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe('Kitab number, UCI or "<book>:<n>", e.g. "HK3"'),
+  baab: z
+    .string()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe('Baab number, UCI or "<kitab>:<n>", e.g. "HY1"'),
 });
 
 export class HadithQueryDto extends createZodDto(hadithQuerySchema) {}
