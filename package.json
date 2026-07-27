@@ -4,8 +4,14 @@
   "private": true,
   "packageManager": "pnpm@10.33.2",
   "scripts": {
+    "dev": "pnpm run --parallel \"/^(dev|start:dev)$/\"",
     "dev:backend": "pnpm --filter backend start:dev",
+    "dev:frontend": "pnpm --filter frontend dev",
     "build:backend": "pnpm --filter backend build",
+    "build:frontend": "pnpm --filter frontend build",
+    "lint:backend": "pnpm --filter backend lint",
+    "lint:frontend": "pnpm --filter frontend lint",
+    "typecheck:frontend": "pnpm --filter frontend typecheck",
     "test:backend": "pnpm --filter backend test"
   }
 }
