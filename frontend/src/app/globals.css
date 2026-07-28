@@ -4,41 +4,51 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Hadees reads as an annotated critical edition rather than illuminated
+ * scripture: iron-gall ink on paper, the paper resting on a cool desk board,
+ * with a madder rubric reserved for structural marks — baab titles, hadith
+ * numerals, grades, focus. Rubric never fills a button; it only ever marks.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-geist-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* The named palette, addressable directly: bg-paper, text-rubric, … */
+  --color-board: var(--board);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rubric: var(--rubric);
+  --color-jadwal: var(--jadwal);
+
+  /*
+   * The corpus holds no English, so Latin is apparatus and never display
+   * type: mono for labels, counts, UCIs and citations; sans for the little
+   * English prose there is. The only display faces are the corpus's own.
+   */
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-arabic: var(--font-amiri);
+  --font-nastaliq: var(--font-nastaliq-urdu);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,72 +59,54 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Paper on a board */
+  --board: oklch(0.905 0.011 265);
+  --paper: oklch(0.985 0.004 90);
+  /* Iron-gall ink, in three weights: matn, translation, apparatus */
+  --ink: oklch(0.24 0.028 268);
+  --ink-2: oklch(0.4 0.022 268);
+  --ink-3: oklch(0.545 0.016 268);
+  /* Madder rubric, and the hairline the frames are ruled in */
+  --rubric: oklch(0.47 0.155 28);
+  --jadwal: oklch(0.855 0.012 265);
+
+  --background: var(--board);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: oklch(0.93 0.008 265);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.935 0.007 265);
+  --muted-foreground: var(--ink-3);
+  --accent: oklch(0.925 0.01 265);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.55 0.2 25);
+  --border: var(--jadwal);
+  --input: var(--jadwal);
+  --ring: var(--rubric);
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* A lit page on a dark desk */
+  --board: oklch(0.16 0.014 268);
+  --paper: oklch(0.215 0.016 268);
+  --ink: oklch(0.94 0.008 90);
+  --ink-2: oklch(0.8 0.01 90);
+  --ink-3: oklch(0.645 0.012 268);
+  --rubric: oklch(0.7 0.145 32);
+  --jadwal: oklch(0.94 0.02 90 / 14%);
+
+  --secondary: oklch(0.27 0.016 268);
+  --muted: oklch(0.265 0.014 268);
+  --accent: oklch(0.285 0.016 268);
+  --destructive: oklch(0.7 0.19 25);
+  --input: oklch(0.94 0.02 90 / 18%);
 }
 
 @layer base {
@@ -125,6 +117,51 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--rubric) 22%, transparent);
+  }
+}
+
+@layer utilities {
+  /* Arabic matn: naskh, right-to-left, roomy leading to clear full harakat. */
+  .script-arabic {
+    font-family: var(--font-arabic), serif;
+    direction: rtl;
+    /* Letter-spacing breaks the cursive joins, so it is always reset here. */
+    letter-spacing: normal;
+    line-height: 2.05;
+    font-feature-settings: "calt", "liga";
+  }
+
+  /* Urdu: nastaliq's steep descending baselines need far more vertical room. */
+  .script-urdu {
+    font-family: var(--font-nastaliq), serif;
+    direction: rtl;
+    letter-spacing: normal;
+    line-height: 2.55;
+  }
+
+  /*
+   * The jadwal — the ruled double frame around a printed text block. Drawn
+   * with a border plus an offset outline so it stays a single element; the
+   * 3px gap shows the surface behind. Parents must leave ~5px of room.
+   */
+  .jadwal {
+    border: 1px solid var(--jadwal);
+    outline: 1px solid var(--jadwal);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

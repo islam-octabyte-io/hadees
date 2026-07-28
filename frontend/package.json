@@ -4,18 +4,20 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3004",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start -p 3004",
     "lint": "eslint",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gen:api": "openapi-typescript ${API_URL:-http://localhost:3003}/docs-json -o src/lib/api/schema.d.ts"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.27.0",
     "next": "16.2.12",
+    "openapi-fetch": "^0.17.0",
     "radix-ui": "^1.6.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -32,6 +34,7 @@
     "eslint-config-next": "16.2.12",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.9.6",
     "tailwindcss": "^4",
     "typescript": "^5"
